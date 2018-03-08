@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:background="#cfc2c2"
-    >
+    android:background="@drawable/dilaog_layout">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:id="@+id/place_image"
+        android:layout_marginTop="25dp"
         />
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,6 +27,15 @@
             android:id="@+id/prev_image"
             />
 
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:indicatorName="BallRotateIndicator"
+            app:indicatorColor="#159b94"
+            android:id="@+id/avi"
+            />
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"

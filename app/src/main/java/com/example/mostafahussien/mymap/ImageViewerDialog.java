@@ -30,10 +30,6 @@ public class ImageViewerDialog extends DialogFragment implements View.OnClickLis
         super.onAttach(context);
         this.context = context;
     }
-
-    // todo put imageView and next,prev image in Utilities class and control them in Utilities class
-    // todo ask "Can i communicate fragment with non-activity class with interface ?"
-
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater=getActivity().getLayoutInflater();
         dialogView=inflater.inflate(R.layout.image_viewer_dialog,null);
@@ -53,7 +49,6 @@ public class ImageViewerDialog extends DialogFragment implements View.OnClickLis
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         utilities=new Utilities(context,dialogView);
         utilities.getPlaceImage(placeID);
-
     }
 
     @Override

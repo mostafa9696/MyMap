@@ -84,7 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleApiClient googleApiClient;
     private PlaceInfo placeInfo;
     private Marker marker;
-    private boolean isFave = false, from_fav_activity = false,placeHasImages=false;
+    private boolean isFave = false, from_fav_activity = false;
     private MyPlace myPlace,favPlace;
     DecimalFormat df;
     ArrayList<NavigationTabBar.Model> icons;
@@ -129,7 +129,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                  lon=place.getViewport().getCenter().longitude;
                 lat= Double.parseDouble(df.format(lat));
                 lon= Double.parseDouble(df.format(lon));
-                myPlace = new MyPlace(currentPlace, lat,lon);  // to insert it in favorite DB if press on fav btn
+                myPlace = new MyPlace(currentPlace, lat,lon,place.getId());  // to insert it in favorite DB if press on fav btn
             }
             catch (NullPointerException e) {
             }
@@ -296,13 +296,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Toast.makeText(getApplicationContext(),"Check your netwerok connection !",Toast.LENGTH_LONG).show();
                         return;
                     }
-                        if(!placeID.equals("none")) {
+                        if(!myPlace.getPlace_id().equals("none")) {
                             DialogFragment dialogFragment = new ImageViewerDialog();
                             Bundle bundle = new Bundle();
-                            bundle.putString("place_id", placeInfo.getId());
+                            bundle.putString("place_id", myPlace.getPlace_id());
                             dialogFragment.setArguments(bundle);
                             if(dialogFragment!=null)
                             dialogFragment.show(getSupportFragmentManager(), "ImageViewerDialog");
+                        } else {
+                        Toast.makeText(getApplicationContext(),"This place has not images",Toast.LENGTH_LONG).show();
                         }
                 }
             }
@@ -341,6 +343,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             double lon=address.getLongitude();
             lat= Double.parseDouble(df.format(lat));
             lon= Double.parseDouble(df.format(lon));
+            myPlace=new MyPlace(currentPlace,lat,lon,"none");
             moveCamera(new LatLng(lat, lon), 15f, address);      // move camera to user input location
         }
     }
@@ -369,6 +372,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 e.printStackTrace();
                             }
                             if (address != null) {
+                                myPlace=new MyPlace(currentPlace,lat,lon,"none");
                                 moveCamera(new LatLng(lat, lon), 15f, address);
 
                             } else {
@@ -384,7 +388,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
     private void moveCamera(LatLng lating, float zoom, PlaceInfo placeInfo) {
-        placeHasImages=true;
         checkPlaceFav();
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lating, zoom));       // move camera position of the map
         myMap.clear();       // clear all the marker of the map
@@ -409,9 +412,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void moveCamera(LatLng lating, float zoom, Address address) {
-        placeHasImages=false;
         checkPlaceFav();
-        myPlace = new MyPlace(address.getAddressLine(0), lating.latitude, lating.longitude);                // to insert it in favorite DB if press on fav btn
+      //  myPlace = new MyPlace(address.getAddressLine(0), lating.latitude, lating.longitude,"none");                // to insert it in favorite DB if press on fav btn
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lating, zoom));       // move camera position of the map
         try {
             String dialogData = "Address: " + address.getAddressLine(0) + "\n" +
@@ -507,9 +509,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 }
 
-// todo make internet connection and no location permission
-// todo insert new column in DB "String placeID" which is be "none" if place is deviceLocation or search button location
-// todo reDesign dialog shape
 // todo make splash screen at mainActivity
-// TODO reDesign mapActivity.java (make utils, .. etc)
+// TODO reDesign mapActivity.java (make utils, put thread to seperate on main thread .. etc)
 // TOdo make final test

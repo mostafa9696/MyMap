@@ -9,7 +9,7 @@ import android.content.Context;
 
 import com.example.mostafahussien.mymap.model.MyPlace;
 
-@Database(entities = { MyPlace.class},version = 5)                    // version of our database (which will be incremented every time we change something in the database schema).
+@Database(entities = { MyPlace.class},version = 6)                    // version of our database (which will be incremented every time we change something in the database schema).
 public abstract class AppDB extends RoomDatabase {
     private static final String DB_NAME = "appDatabase.db";
     private static volatile AppDB instance;
@@ -22,13 +22,13 @@ public abstract class AppDB extends RoomDatabase {
         }
         return instance;
     }
-    static final Migration MIGRATION_1_2 = new Migration(2,5) {
+    static final Migration MIGRATION_1_2 = new Migration(5,6) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-          //  database.execSQL("DROP TABLE place");
-            database.execSQL("CREATE TABLE myPlaces ( address TEXT NOT NULL PRIMARY KEY  ,\n" +
+            database.execSQL("Alter table myPlaces add column placeID TEXT");
+          /*  database.execSQL("CREATE TABLE myPlaces ( address TEXT NOT NULL PRIMARY KEY  ,\n" +
                     " latitude REAL NOT NULL ,\n" +
-                    " longitude REAL NOT NULL )" );
+                    " longitude REAL NOT NULL )" );*/
         }
     };
 

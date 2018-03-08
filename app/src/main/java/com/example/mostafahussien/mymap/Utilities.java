@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +19,7 @@ import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Utilities{
     private  List<PlacePhotoMetadata> photosDataList;
     private int size,currentIndex;
     ImageView imageView,next,prev,noImage;
+    private AVLoadingIndicatorView avi;
     public Utilities(Context context, View dialog) {
         this.context = context;
         size=0;
@@ -37,6 +39,8 @@ public class Utilities{
         next=(ImageView)dialog.findViewById(R.id.next_image);
         prev=(ImageView)dialog.findViewById(R.id.prev_image);
         noImage=(ImageView)dialog.findViewById(R.id.no_image);
+        avi= (AVLoadingIndicatorView)dialog. findViewById(R.id.avi);
+        avi.hide();
         currentIndex=0;
     }
     public  void getPlaceImage(String placeID){
@@ -54,7 +58,6 @@ public class Utilities{
                     for(PlacePhotoMetadata photoMetadata : photoMetadataBuffer){
                         photosDataList.add(photoMetadata);
                     }
-                   // photoMetadataBuffer.release();
                     size=photosDataList.size();
                     displayImage();
                 }
@@ -63,6 +66,7 @@ public class Utilities{
         }
     }
     public void getImage(PlacePhotoMetadata photoMetadata){
+        avi.show();
         Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
         photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
             @Override
@@ -71,6 +75,7 @@ public class Utilities{
                 Bitmap photoBitmap = photo.getBitmap();
                 imageView.invalidate();                 // forces the view to be redrawn immediately and not during the next cycle
                 imageView.setImageBitmap(photoBitmap);
+                avi.hide();
             }
         });
     }
@@ -83,7 +88,6 @@ public class Utilities{
         getImage(photosDataList.get(currentIndex));
     }
     public void nextImage(){
-        Log.i("rr6", "size "+photosDataList.size()+" currentIndex "+currentIndex);
         if(currentIndex==photosDataList.size()-1){
          next.setClickable(false);
         }else {

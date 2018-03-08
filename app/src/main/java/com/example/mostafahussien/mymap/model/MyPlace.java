@@ -19,21 +19,37 @@ public class MyPlace implements Parcelable{
     private double latitude;
     @ColumnInfo(name = "longitude")
     private double longitude;
-
+    @ColumnInfo(name = "placeID")
+    private String place_id;
     @Ignore
     public MyPlace() {
     }
 
-    public MyPlace(@NonNull String address, double latitude, double longitude) {
+    public MyPlace(@NonNull String address, double latitude, double longitude, String place_id) {
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.place_id = place_id;
     }
 
     protected MyPlace(Parcel in) {
         address = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
+        place_id = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(place_id);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<MyPlace> CREATOR = new Creator<MyPlace>() {
@@ -73,17 +89,11 @@ public class MyPlace implements Parcelable{
         this.longitude = longitude;
     }
 
-
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getPlace_id() {
+        return place_id;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(address);
-        parcel.writeDouble(latitude);
-        parcel.writeDouble(longitude);
+    public void setPlace_id(String place_id) {
+        this.place_id = place_id;
     }
 }
