@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/place_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:clipChildren="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="9dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardElevation="4dp"
+
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/place_image"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My place is : cairo, Egypt "
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/address_text"
+            android:textColor="#18555e"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginRight="35dp"
+            android:layout_marginLeft="35dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:text="Latitude : "
+            android:padding="5dp"
+            android:id="@+id/latitude_text"
+            android:textColor="#267480"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:text="Longitude : "
+            android:padding="5dp"
+            android:id="@+id/longitude_text"
+            android:textColor="#267480"
+            />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

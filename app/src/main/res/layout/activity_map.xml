@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mostafahussien.mymap.Activity.MapActivity">
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="7dp"
+        android:elevation="10dp"
+        android:background="@drawable/white_border"
+        android:id="@+id/search_bar"
+        >
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:id="@+id/ic_search"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/ic_search_icon"
+            />
+        <AutoCompleteTextView
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:id="@+id/input_serach"
+            android:layout_toRightOf="@id/ic_search"
+            android:layout_centerVertical="true"
+            android:textColor="#1d1c1c"
+            android:textSize="15sp"
+            android:background="@null"
+            android:hint="Enter Address, City or Zip code"
+            android:inputType="textAutoComplete"
+            android:layout_marginRight="3dp"
+            android:layout_marginStart="3dp"
+            />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/ic_fav"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/ic_fav_icon"
+            android:layout_toRightOf="@+id/input_serach"
+            android:tag="un_fav"
+            />
+    </RelativeLayout>
+
+    <devlight.io.library.ntb.NavigationTabBar
+        android:id="@+id/nav_bar"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="8dp"
+        android:gravity="bottom"
+        app:ntb_active_color="#b14b6b"
+        app:ntb_animation_duration="250"
+        app:ntb_bg_color="#b14b6b"
+        app:ntb_corners_radius="25dp"
+        app:ntb_inactive_color="#dddfec"
+        app:ntb_scaled="false"
+
+        />
+</RelativeLayout>
