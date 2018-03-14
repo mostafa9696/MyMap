@@ -2,10 +2,16 @@ package com.example.mostafahussien.mymap.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mostafahussien.mymap.R;
@@ -14,24 +20,47 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST=9001;
-    Button button;
+    TextView textView;
+    Thread splashThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button=(Button)findViewById(R.id.btn);
+        textView=(TextView) findViewById(R.id.map_text);
+        startAnimation();
         if(isOK()) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    init();
-                }
-            });
+            startThread();
         }
     }
-    private void init(){
-        Intent intent=new Intent(this,MapActivity.class);
-        startActivity(intent);
+    public void startAnimation(){
+        Animation fadeIn = new AlphaAnimation(0, 1);        // from alpha 0 to alpha 1
+        fadeIn.setInterpolator(new DecelerateInterpolator());
+        fadeIn.setDuration(2500);
+        textView.setAnimation(fadeIn);
+    }
+    public void startThread(){
+        splashThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    int waited = 0;
+                    // Splash screen pause time
+                    while (waited < 3500) {
+                        sleep(100);
+                        waited += 200;
+                    }
+                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                } catch (InterruptedException e) {
+
+                } finally {
+                    MainActivity.this.finish();
+                }
+            }
+        };
+        splashThread.start();
     }
 
     public boolean isOK(){

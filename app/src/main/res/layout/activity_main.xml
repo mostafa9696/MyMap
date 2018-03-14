@@ -4,13 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mostafahussien.mymap.Activity.MainActivity">
+    tools:context="com.example.mostafahussien.mymap.Activity.MainActivity"
+    android:background="#94b4b4"
+    >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="map"
-        android:id="@+id/btn"
+   <ImageView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:src="@drawable/mapsplash"
+       android:layout_marginBottom="60dp"
+
+       />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/location"
+
         />
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/location" />
+
+    <TextView
+        android:id="@+id/map_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="110dp"
+        android:fontFeatureSettings="f"
+        android:text="MyMap"
+        android:textColor="#a4520b"
+        android:textSize="65sp"
+        android:fontFamily="cursive"
+        android:textStyle="bold"
+        />
 </RelativeLayout>

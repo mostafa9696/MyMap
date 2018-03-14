@@ -509,6 +509,3 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 }
 
-// todo make splash screen at mainActivity
-// TODO reDesign mapActivity.java (make utils, put thread to seperate on main thread .. etc)
-// TOdo make final test
