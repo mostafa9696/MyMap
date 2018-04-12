@@ -19,7 +19,6 @@ import com.example.mostafahussien.mymap.R;
 import com.example.mostafahussien.mymap.Services.RetriveFavoritsService;
 import com.example.mostafahussien.mymap.model.MyPlace;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritePlaces extends AppCompatActivity {

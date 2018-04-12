@@ -125,8 +125,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             double lon=0;
             try {
                 currentPlace = place.getAddress().toString();
-                 lat=place.getViewport().getCenter().latitude;
-                 lon=place.getViewport().getCenter().longitude;
+                lat=place.getViewport().getCenter().latitude;
+                lon=place.getViewport().getCenter().longitude;
                 lat= Double.parseDouble(df.format(lat));
                 lon= Double.parseDouble(df.format(lon));
                 myPlace = new MyPlace(currentPlace, lat,lon,place.getId());  // to insert it in favorite DB if press on fav btn
@@ -179,15 +179,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if(getIntent().getExtras()!=null){
             from_fav_activity = getIntent().getExtras().getBoolean("from_fav_activity", false);
         }
+        Log.e("tt6", "on1" );
         editText = (AutoCompleteTextView) findViewById(R.id.input_serach);
         search = (ImageView) findViewById(R.id.ic_search);
         favImage = (ImageView) findViewById(R.id.ic_fav);
-        navigationTabBar = (NavigationTabBar) findViewById(R.id.nav_bar);
+        navigationTabBar = (NavigationTabBar) findViewById(R.id.nav_bar);       // cause problem when install app for first time !!!
         icons = new ArrayList<>();
         myPlace = new MyPlace();
         df = new DecimalFormat("#.######");
         df.setRoundingMode(RoundingMode.FLOOR);
+        Log.e("tt6", "on2" );
         getLocationPermission();                                // ask user for permission to access his location
+        Log.e("tt6", "on2" );
     }
     public void moveToFavoritePlace(){
         if(!Utilities.isNetworkAvailable(this)) {
@@ -212,14 +215,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
     private void init() {
+        Log.e("tt6", "pl1" );
         googleApiClient = new GoogleApiClient.Builder(this)           // to use it in autoComplete place adapter
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        Log.e("tt6", "pl2" );
         editText.setOnItemClickListener(autoCompleteClickLis);
         adapter = new PlaceAutoCompleteAdapter(this, googleApiClient, LAT_LNG_BOUNDS, null);
         editText.setAdapter(adapter);
+        Log.e("tt6", "pl3" );
         search.setOnClickListener(new View.OnClickListener() {          // when click on search imageButton
             @Override
             public void onClick(View view) {
@@ -240,6 +246,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+        Log.e("tt6", "pl5" );
         icons.add(
                 new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.ic_place_picker), Color.WHITE).build()
         );
@@ -255,6 +262,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         icons.add(
                 new NavigationTabBar.Model.Builder(getResources().getDrawable(R.drawable.ic_place_images), Color.WHITE).build()
         );
+        Log.e("tt6", "pl6" );
         navigationTabBar.setModels(icons);
         navigationTabBar.setModelIndex(2, true);
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
@@ -296,20 +304,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Toast.makeText(getApplicationContext(),"Check your netwerok connection !",Toast.LENGTH_LONG).show();
                         return;
                     }
-                        if(!myPlace.getPlace_id().equals("none")) {
-                            DialogFragment dialogFragment = new ImageViewerDialog();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("place_id", myPlace.getPlace_id());
-                            dialogFragment.setArguments(bundle);
-                            if(dialogFragment!=null)
+                    if(!myPlace.getPlace_id().equals("none")) {
+                        DialogFragment dialogFragment = new ImageViewerDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("place_id", myPlace.getPlace_id());
+                        dialogFragment.setArguments(bundle);
+                        if(dialogFragment!=null)
                             dialogFragment.show(getSupportFragmentManager(), "ImageViewerDialog");
-                        } else {
+                    } else {
                         Toast.makeText(getApplicationContext(),"This place has not images",Toast.LENGTH_LONG).show();
-                        }
+                    }
                 }
             }
         });
+        Log.e("tt6", "pl7" );
         hideKeyboard();
+        Log.e("tt6", "pl8" );
     }
 
     @Override
@@ -350,6 +360,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void getDeviceLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        Log.e("tt6", "on4" );
         try {
             if (locationPermissionGranted) {
                 Task task = fusedLocationProviderClient.getLastLocation();        // task is used to move camera from location to another in the same activity
@@ -361,22 +372,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             Location location = (Location) task.getResult();
                             Address address = null;
                             Geocoder geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
-                            double lat=location.getLatitude();
-                            double lon=location.getLongitude();
+                            double lat=0.1;
+                            double lon=0.1;
                             try {
+                                 lat=location.getLatitude();
+                                 lon=location.getLongitude();
                                 lat= Double.parseDouble(df.format(lat));
                                 lon= Double.parseDouble(df.format(lon));
                                 address = geocoder.getFromLocation(lat, lon, 1).get(0);
                                 currentPlace = address.getAddressLine(0);
                             } catch (IOException e) {
                                 e.printStackTrace();
+                            } catch (NullPointerException n){
+                                n.printStackTrace();
                             }
                             if (address != null) {
                                 myPlace=new MyPlace(currentPlace,lat,lon,"none");
                                 moveCamera(new LatLng(lat, lon), 15f, address);
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Unable to get current location, Check your Internet connection!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Unable to get current location, open your GPS", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "Unable to get current location, Check your Internet connection then try again !", Toast.LENGTH_SHORT).show();
@@ -413,7 +428,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void moveCamera(LatLng lating, float zoom, Address address) {
         checkPlaceFav();
-      //  myPlace = new MyPlace(address.getAddressLine(0), lating.latitude, lating.longitude,"none");                // to insert it in favorite DB if press on fav btn
+        //  myPlace = new MyPlace(address.getAddressLine(0), lating.latitude, lating.longitude,"none");                // to insert it in favorite DB if press on fav btn
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lating, zoom));       // move camera position of the map
         try {
             String dialogData = "Address: " + address.getAddressLine(0) + "\n" +
@@ -508,4 +523,3 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 }
-
