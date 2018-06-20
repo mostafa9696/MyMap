@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean isOK(){
         int avail= GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
         if(avail== ConnectionResult.SUCCESS) {
-            Toast.makeText(getApplicationContext(), "fine", Toast.LENGTH_SHORT).show();
             return true;
         } else if(GoogleApiAvailability.getInstance().isUserResolvableError(avail)){
             Toast.makeText(getApplicationContext(), "error but can fix it", Toast.LENGTH_SHORT).show();
